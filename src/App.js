@@ -1,5 +1,5 @@
 import React from 'react';
-import TestUseRoll from './test/testUseRoll';
+import { TestUseTimeCountDown } from './test';
 export default function App() {
-	return <TestUseRoll />;
+	return <TestUseTimeCountDown />;
 }

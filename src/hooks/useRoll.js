@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 
-export const useRoll = ({ endHandler }) => {
+const useRoll = ({ endHandler, num = 8 }) => {
 	//是否滚动状态
 	const [ runing, setRuning ] = useState(false);
 	//滚动坐标
@@ -22,6 +22,8 @@ export const useRoll = ({ endHandler }) => {
 	const closeNodeIndex = useRef(-1);
 
 	const engine = useRef();
+
+	const numRoll = num * 2;
 
 	const reset = useCallback(() => {
 		if (engine.current) {
@@ -45,12 +47,12 @@ export const useRoll = ({ endHandler }) => {
 		() => {
 			rollCount.current++;
 
-			const currentIndex = rollCount.current % 8;
+			const currentIndex = rollCount.current % num;
 
 			setIndex(currentIndex);
 
 			if (awardResultIndex.current > -1 && rollCount.current >= slowDownNode.current) {
-				speed.current = speed.current + (minSpeed - maxSpeed) / parseInt(16 + awardResultIndex.current);
+				speed.current = speed.current + (minSpeed - maxSpeed) / parseInt(numRoll + awardResultIndex.current);
 
 				if (rollCount.current === closeNodeIndex.current) {
 					setTimeout(() => {
@@ -66,23 +68,27 @@ export const useRoll = ({ endHandler }) => {
 			}
 			engine.current = setTimeout(startRoll, [ speed.current ]);
 		},
-		[ endHandler ]
+		[ endHandler, num, numRoll ]
 	);
 
-	const stop = useCallback((index) => {
-		awardResultIndex.current = index;
+	const stop = useCallback(
+		(index) => {
+			awardResultIndex.current = index;
 
-		//当前节点 是否大于 最小减速节点
-		if (rollCount.current > slowDownNode.current) {
-			//结束节点= 当前节点 - 当前节点超出索引0的值 + 16 (2圈) + 奖品的0-7 坐标
-			closeNodeIndex.current = rollCount.current - rollCount.current % 8 + 16 + awardResultIndex.current;
-		} else {
-			//结束节点= 减速节点(默认最小减速节点) +16 (2圈) + 奖品的0-7 坐标
-			closeNodeIndex.current = slowDownNode.current + 16 + awardResultIndex.current;
-		}
-		//减速节点=结束节点-16（2圈）
-		slowDownNode.current = closeNodeIndex.current - 16;
-	}, []);
+			//当前节点 是否大于 最小减速节点
+			if (rollCount.current > slowDownNode.current) {
+				//结束节点= 当前节点 - 当前节点超出索引0的值 + numRoll (2圈) + 奖品的0-7 坐标
+				closeNodeIndex.current =
+					rollCount.current - rollCount.current % num + numRoll + awardResultIndex.current;
+			} else {
+				//结束节点= 减速节点(默认最小减速节点) +numRoll (2圈) + 奖品的0-7 坐标
+				closeNodeIndex.current = slowDownNode.current + numRoll + awardResultIndex.current;
+			}
+			//减速节点=结束节点-numRoll（2圈）
+			slowDownNode.current = closeNodeIndex.current - numRoll;
+		},
+		[ num, numRoll ]
+	);
 
 	const start = useCallback(
 		() => {
@@ -99,3 +105,5 @@ export const useRoll = ({ endHandler }) => {
 
 	return { index, runing, start, stop, reset };
 };
+
+export default useRoll;

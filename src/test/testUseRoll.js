@@ -1,8 +1,11 @@
 import React from 'react';
-import { useRoll } from '../hooks';
-function test() {}
+import useRoll from '../hooks/useRoll';
+
 export default function TestUseRoll() {
-	const { index, start, stop } = useRoll({ endHandler: test });
+	function test() {
+		console.log('end');
+	}
+	const { index, start, stop } = useRoll({ endHandler: test, num: 16 });
 
 	return (
 		<div
