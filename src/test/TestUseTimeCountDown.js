@@ -1,5 +1,5 @@
 import React from 'react';
-import useTimeCountDown from '../hooks/useTimeCountDown';
+import { useTimeCountDown } from '../hooks';
 import dayjs from 'dayjs';
 
 export default function TestUseTimeCountDown() {

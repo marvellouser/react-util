@@ -2,7 +2,7 @@ import { useRef, useCallback } from 'react';
 
 const useRfa = (
 	duration,
-	callback,
+	callback = () => {},
 	options = {
 		immediate: false
 	}
@@ -13,22 +13,33 @@ const useRfa = (
 	eventRef.current = callback;
 	const immediate = options.immediate;
 
+	const requestAnimationFrameFn = useCallback(
+		() => {
+			if (typeof window.requestAnimationFrame === 'undefined') {
+				return setInterval(
+					() => {
+						eventRef.current();
+					},
+					[ duration ]
+				);
+			}
+		},
+		[ duration ]
+	);
+
 	const fn = useCallback(
 		(timestamp) => {
 			if (!startRef.current) {
 				startRef.current = timestamp;
-				if (immediate) {
-					eventRef.current && eventRef.current();
-				}
 			}
 
 			if (timestamp - startRef.current > duration) {
-				eventRef.current && eventRef.current();
+				eventRef.current();
 				startRef.current = timestamp;
 			}
 			rfaIdRef.current = requestAnimationFrame(fn);
 		},
-		[ duration, immediate ]
+		[ duration ]
 	);
 
 	const start = useCallback(
@@ -36,9 +47,12 @@ const useRfa = (
 			if (rfaIdRef.current) {
 				return;
 			}
-			rfaIdRef.current = requestAnimationFrame(fn);
+			if (immediate) {
+				eventRef.current();
+			}
+			rfaIdRef.current = requestAnimationFrameFn();
 		},
-		[ fn ]
+		[ requestAnimationFrameFn, immediate ]
 	);
 
 	const stop = useCallback(() => {

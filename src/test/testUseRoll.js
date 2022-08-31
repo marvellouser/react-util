@@ -1,5 +1,5 @@
 import React from 'react';
-import useRoll from '../hooks/useRoll';
+import { useRoll } from '../hooks';
 
 export default function TestUseRoll() {
 	function test() {

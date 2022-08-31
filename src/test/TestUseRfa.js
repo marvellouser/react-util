@@ -1,4 +1,4 @@
-import useRfa from '../hooks/useRfa';
+import { useRfa } from '../hooks';
 
 export default function TestUseRfa() {
 	const { start, stop } = useRfa(
