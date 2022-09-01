@@ -1,5 +1,5 @@
 import useRoll from './useRoll';
 import useTimeCountDown from './useTimeCountDown';
-import useRfa from './useRfa';
+import useRaf from './useRaf';
 
-export { useRoll, useTimeCountDown, useRfa };
+export { useRoll, useTimeCountDown, useRaf };

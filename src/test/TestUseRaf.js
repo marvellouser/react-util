@@ -1,7 +1,7 @@
-import { useRfa } from '../hooks';
+import { useRaf } from '../hooks';
 
-export default function TestUseRfa() {
-	const { start, stop } = useRfa(
+export default function TestUseRaf() {
+	const { start, stop } = useRaf(
 		1000,
 		() => {
 			console.log(1111);

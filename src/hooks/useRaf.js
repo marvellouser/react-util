@@ -1,6 +1,6 @@
 import { useRef, useCallback } from 'react';
 
-const useRfa = (
+const useRaf = (
 	duration,
 	callback = () => {},
 	options = {
@@ -16,27 +16,25 @@ const useRfa = (
 	const requestAnimationFrameFn = useCallback(
 		() => {
 			if (typeof window.requestAnimationFrame === 'undefined') {
-				return setInterval(
+				rfaIdRef.current = setInterval(
 					() => {
 						eventRef.current();
 					},
 					[ duration ]
 				);
 			}
-		},
-		[ duration ]
-	);
+			const fn = (timestamp) => {
+				if (!startRef.current) {
+					startRef.current = timestamp;
+				}
 
-	const fn = useCallback(
-		(timestamp) => {
-			if (!startRef.current) {
-				startRef.current = timestamp;
-			}
+				if (timestamp - startRef.current > duration) {
+					eventRef.current();
+					startRef.current = timestamp;
+				}
+				rfaIdRef.current = requestAnimationFrame(fn);
+			};
 
-			if (timestamp - startRef.current > duration) {
-				eventRef.current();
-				startRef.current = timestamp;
-			}
 			rfaIdRef.current = requestAnimationFrame(fn);
 		},
 		[ duration ]
@@ -50,14 +48,17 @@ const useRfa = (
 			if (immediate) {
 				eventRef.current();
 			}
-			rfaIdRef.current = requestAnimationFrameFn();
+			requestAnimationFrameFn();
 		},
 		[ requestAnimationFrameFn, immediate ]
 	);
 
 	const stop = useCallback(() => {
-		startRef.current = undefined;
+		if (typeof window.requestAnimationFrame === 'undefined') {
+			clearInterval(rfaIdRef.current);
+		}
 		cancelAnimationFrame(rfaIdRef.current);
+		startRef.current = undefined;
 		rfaIdRef.current = null;
 	}, []);
 
@@ -67,4 +68,4 @@ const useRfa = (
 	};
 };
 
-export default useRfa;
+export default useRaf;
