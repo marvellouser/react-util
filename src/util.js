@@ -90,3 +90,25 @@ export const getBrowser = () => {
 		isPc
 	};
 };
+
+// 手写classNames
+export const classNames = (...args) => {
+	const classes = [];
+	args.forEach((arg) => {
+		const argType = typeof arg;
+		if (argType === 'string' || argType === 'number') {
+			classes.push(arg);
+		} else if (Array.isArray(arg)) {
+			const inner = classNames(...arg);
+			classes.push(inner);
+		} else if (argType === 'object') {
+			Object.keys(arg).forEach((item) => {
+				if (arg[item]) {
+					classes.push(item);
+				}
+			});
+		}
+	});
+
+	return classes.join(' ');
+};
