@@ -1,6 +1,5 @@
 import React from 'react';
-import { TestUseRaf } from './test';
-import './test/TestUtil';
+import { TestUseIntersectionObserver } from './test';
 export default function App() {
-	return <TestUseRaf />;
+	return <TestUseIntersectionObserver />;
 }
