@@ -1,19 +1,12 @@
-import { classNames } from '../util';
+import React, { useState } from 'react';
+import NumberTicker from '../components/NumberTicker';
 
-console.log(
-	classNames(
-		'a',
-		'b',
-		'c',
-		[ 'd', 'e', 'f' ],
-		{
-			g: 10 > 9,
-			h: false
-		},
-		{
-			i: true,
-			j: true,
-			k: false
-		}
-	)
-);
+export default function NumberTickerTest() {
+	const [ num, setNum ] = useState(5);
+	window.setNum = setNum;
+	return (
+		<div style={{ width: 300, paddingTop: 100 }}>
+			<NumberTicker number={num} />
+		</div>
+	);
+}

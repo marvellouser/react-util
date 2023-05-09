@@ -1,5 +1,5 @@
-import React from 'react';
-import { TestUseIntersectionObserver } from './test';
+import NumberTickerTest from './test/TestUtil';
+
 export default function App() {
-	return <TestUseIntersectionObserver />;
+	return <NumberTickerTest />;
 }

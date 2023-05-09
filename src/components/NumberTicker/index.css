@@ -1,0 +1,22 @@
+.wrap {
+	width: 100%;
+	display: inline-flex;
+	color: #F04349;
+	font-weight: bold;
+	font-size: 49px;
+}
+
+.num-item-wrap {
+	display: inline-block;
+	overflow: hidden;
+}
+
+.num-item {
+	transition: transform .3s linear;
+}
+
+.num-item div {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
