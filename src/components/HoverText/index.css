@@ -1,0 +1,38 @@
+
+
+.text-wrap {
+    position: relative;
+    display: inline-block;
+    font-size: 32px;
+    color: orange;
+    font-weight: 800;
+    text-decoration: underline;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.text-wrap .inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    transform: translateX(-100%);
+    transition: transform 300ms linear;
+}
+
+.text-wrap .move {
+    display: inline-block;
+    color: blue;
+    transform: translateX(100%);
+    transition: transform 300ms linear;
+    text-decoration: underline;
+}
+
+.text-wrap:hover .inner {
+    transform: translateX(0);
+
+}
+
+.text-wrap:hover .move {
+    transform: translateX(0);
+}

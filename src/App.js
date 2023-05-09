@@ -1,5 +1,5 @@
-import NumberTickerTest from './test/TestUtil';
+import { TestHoverText } from './test/index';
 
 export default function App() {
-	return <NumberTickerTest />;
+	return <TestHoverText />;
 }
