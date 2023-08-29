@@ -14,7 +14,7 @@ const useRoll = ({ endHandler, num = 8 }) => {
 	//最大滚动速度
 	const maxSpeed = 50;
 	//减速节点 当滚动次数到达改节点后开始减速
-	const slowDownNode = useRef(32);
+	const slowDownNode = useRef(num * 4);
 	//最终奖品的坐标
 	const awardResultIndex = useRef(-1);
 
@@ -25,23 +25,26 @@ const useRoll = ({ endHandler, num = 8 }) => {
 
 	const numRoll = num * 2;
 
-	const reset = useCallback(() => {
-		if (engine.current) {
-			clearTimeout(engine.current);
-		}
+	const reset = useCallback(
+		() => {
+			if (engine.current) {
+				clearTimeout(engine.current);
+			}
 
-		speed.current = 150;
+			speed.current = 150;
 
-		setIndex(-1);
+			setIndex(-1);
 
-		rollCount.current = -1;
+			rollCount.current = -1;
 
-		closeNodeIndex.current = -1;
+			closeNodeIndex.current = -1;
 
-		awardResultIndex.current = -1;
+			awardResultIndex.current = -1;
 
-		slowDownNode.current = 32;
-	}, []);
+			slowDownNode.current = num * 4;
+		},
+		[ num ]
+	);
 
 	const startRoll = useCallback(
 		() => {
